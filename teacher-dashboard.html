@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="css/teacher_dashboard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script type="module" src="js/teacher_dashboard.js" defer></script>
+</head>
+<body>
+
+  <!-- Navigation bar -->
+  <nav class="navbar">
+    <div class="logo">📘 EduConnect</div>
+    <div class="nav-links">
+      <a href="#appointments">Appointments</a>
+      <a href="#messages">Messages</a>
+      <button onclick="confirmLogout()">🔓 Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main dashboard -->
+  <div class="container">
+    <h2 id="welcomeText" class="gradient-text fade-in">Welcome, Teacher!</h2>
+
+    <section id="appointments" class="section fade-in">
+      <h3>📅 Upcoming Appointments</h3>
+      <div id="appointmentsList" class="card-list"></div>
+    </section>
+
+    <section id="messages" class="section fade-in">
+      <h3>📨 Student Messages</h3>
+      <div id="messagesList" class="card-list"></div>
+    </section>
+  </div>
+
+</body>
+</html>

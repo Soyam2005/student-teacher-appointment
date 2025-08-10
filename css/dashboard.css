@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #ece9e600, #ffffff00);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+/* Container for entire dashboard */
+.container {
+  width: 100%;
+  max-width: 960px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.section {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ecf0f1;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.section h3 {
+  color: #2980b9;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+input,
+button {
+  padding: 12px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+  outline: none;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: scale(1.03);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+ul#teacherList {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+ul#teacherList li {
+  background-color: #f1f1f1;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: background 0.3s, transform 0.3s;
+}
+
+ul#teacherList li:hover {
+  background-color: #dff0ff;
+  transform: translateX(10px);
+}
+
+/* Logout Button Styling */
+.section button[onclick="logout()"] {
+  background-color: #e74c3c;
+  margin-top: 20px;
+  width: 200px;
+}
+
+.section button[onclick="logout()"]:hover {
+  background-color: #c0392b;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  input,
+  button {
+    max-width: 100%;
+  }
+}
+.gradient-text {
+  background: linear-gradient(90deg, #3498db, #9b59b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Smooth fade-in animation */
+.fade-in {
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: Larger & bold welcome */
+.welcome-header {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}

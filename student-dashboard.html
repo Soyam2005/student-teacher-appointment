@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+ <h2 id="welcomeText" class="welcome-header gradient-text fade-in">Welcome, Student!</h2>
+
+  <div>
+    <h3>Search Teacher</h3>
+    <input type="text" id="searchDept" placeholder="Enter Department" />
+    <button onclick="searchTeacher()">Search</button>
+    <ul id="teacherList"></ul>
+  </div>
+
+  <div>
+    <h3>Book Appointment</h3>
+    <input type="text" id="teacherId" placeholder="Teacher Email" />
+    <input type="datetime-local" id="timeSlot" />
+    <button onclick="bookAppointment()">Book</button>
+  </div>
+
+  <div>
+    <h3>Send Message</h3>
+    <input type="text" id="msgTeacherId" placeholder="Teacher Email" />
+    <input type="text" id="msgContent" placeholder="Your message" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <div class="section">
+  <button onclick="logout()">Logout</button>
+</div>
+
+  <script type="module" src="js/student_dashboard.js"></script>
+</body>
+</html>
