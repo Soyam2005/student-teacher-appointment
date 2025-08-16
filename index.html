@@ -3,26 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login | Student-Teacher Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      min-height: 100vh;
+    }
+    .login-card {
+      border-radius: 10px;
+    }
+    .password-toggle {
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
   <div id="alertContainer" class="container mt-3"></div>
+  
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-4">
-        <div class="card shadow">
-          <div class="card-body">
-            <h4 class="card-title text-center w-500 mb-4">Login</h4>
-            <form id="loginForm">
+      <div class="col-md-5 col-lg-4">
+        <div class="card shadow login-card">
+          <div class="card-body p-4">
+            <h4 class="card-title text-center mb-3 fw-bold">Welcome Back</h4>
+            <p class="text-center text-muted small">
+              Please log in with your registered email and password
+            </p>
+
+            <form id="loginForm" autocomplete="off">
               <div class="mb-3">
-                <input type="email" id="email" class="form-control" placeholder="Email" required />
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="e.g. student@example.com" required />
               </div>
               <div class="mb-3">
-                <input type="password" id="password" class="form-control" placeholder="Password" required />
+                <label for="password" class="form-label fw-semibold">Password</label>
+                <div class="input-group">
+                  <input type="password" id="password" class="form-control" placeholder="Enter your password" required />
+                  <span class="input-group-text password-toggle" id="togglePassword" title="Show/Hide Password">
+                    <i class="bi bi-eye"></i>
+                  </span>
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary w-100">Login</button>
+              <button type="submit" class="btn btn-primary w-100">Log In</button>
             </form>
+
             <div class="text-center mt-3">
               <a href="register.html">Don't have an account? Register</a>
             </div>
@@ -31,7 +58,8 @@
       </div>
     </div>
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <script src="js/main.js" type="module"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

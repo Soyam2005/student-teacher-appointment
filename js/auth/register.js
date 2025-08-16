@@ -1,62 +1,79 @@
 import { auth, db } from "../firebase/firebase-config.js";
-import {
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 import {
   setDoc,
-  doc
+  serverTimestamp,
+  doc,
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 import { logAction } from "../utils/logger.js";
 import { showAlert } from "../utils/alerts.js";
 
 /**
- * 
- * @param {string} email 
- * @param {string} password 
- * @param {Role} role - admin, teacher, student
- * @param {string} fullName 
+ * Register user as STUDENT only. Admin must approve.
+ * @param {string} email
+ * @param {string} password
+ * @param {string} fullName
  */
-async function registerUser(email, password, role, fullName) {
+async function registerUser(email, password, fullName) {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // create firebase auth user
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const uid = userCredential.user.uid;
-    const userDoc = doc(db, "users", uid);
-    await setDoc(userDoc, {
+
+    // All registrations from this form are STUDENT and must be approved by admin
+    const role = "student";
+    const approved = false;
+    const status = "pending";
+
+    const userDocRef = doc(db, "users", uid);
+    await setDoc(userDocRef, {
       email,
       fullName,
       role,
-      createdAt: Date.now()
+      approved,
+      status,
+      createdAt: serverTimestamp(),
     });
 
-    logAction(`Registered: ${email}`, uid);
-    // alert("Registration successful!");
-    showAlert("Registration successful!", "success");
-    window.location.href = "index.html";
+    logAction(`Student registered (pending approval): ${email}`, uid);
+    showAlert(
+      "Registration submitted. Waiting for admin approval.",
+      "success",
+      5000
+    );
   } catch (err) {
-    // alert("Registration failed: " + err.message);
     showAlert("Registration failed: " + err.message, "danger");
     logAction("Registration failed: " + err.message, "unknown");
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const registerForm = document.getElementById("registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const fullName = document.getElementById("name").value.trim();
 
-document.addEventListener('DOMContentLoaded', async() => {
-    const registerForm = document.getElementById('registerForm');
-    if(registerForm){
-        registerForm.addEventListener('submit', async(e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const role = document.getElementById('role').value.trim();
-            const fullName = document.getElementById('name').value.trim();
-            if(!email || !password || !role || !fullName){
-                // alert("Please fill in all fields");
-                showAlert("Please fill in all fields", "danger");
-                return;
-            }
-            await registerUser(email, password, role, fullName);
-        })
-    }
-})
+      if (!email || !password || !fullName) {
+        showAlert("Please fill in all fields", "danger");
+        return;
+      }
+
+      // Optionally: add password strength checks or email domain validation here
+
+      await registerUser(email, password, fullName);
+      // Clear the inputs
+      email.value = "";
+      password.value = "";
+      fullName.value = "";
+    });
+  }
+});
