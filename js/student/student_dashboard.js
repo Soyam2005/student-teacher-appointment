@@ -584,8 +584,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Logout
   logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "index.html";
+    globalLoader.show("Logging out...");
+    try {
+      await signOut(auth);
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Error logging out:", error);
+      showAlert("Logout failed. Please try again.", "danger");
+    } finally {
+      globalLoader.hide();
+    }
   });
 
   // Auth check

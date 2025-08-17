@@ -14,6 +14,7 @@ import {
 
 import { showAlert } from "../utils/alerts.js";
 import { logAction } from "../utils/logger.js";
+import { globalLoader } from "../utils/loader.js";
 
 export function initTeachers() {
   const teachersTableBody = document.getElementById("teachersTableBody");
@@ -69,6 +70,9 @@ export function initTeachers() {
       : [];
 
     try {
+      globalLoader.show(
+        editingId ? "Updating teacher..." : "Adding teacher..."
+      );
       if (!editingId) {
         // Only add to "teachers" collection
         const docRef = await addDoc(collection(db, "teachers"), {
@@ -101,6 +105,8 @@ export function initTeachers() {
     } catch (err) {
       console.error(err);
       showAlert("Failed to save teacher: " + err.message, "danger");
+    } finally {
+      globalLoader.hide();
     }
   });
 
@@ -139,6 +145,7 @@ export function initTeachers() {
     if (!action || !id) return;
 
     if (action === "edit") {
+      globalLoader.show("Loading teacher data...");
       try {
         const docSnap = await getDoc(doc(db, "teachers", id));
         if (!docSnap.exists()) {
@@ -160,11 +167,14 @@ export function initTeachers() {
       } catch (err) {
         console.error(err);
         showAlert("Could not fetch teacher: " + err.message, "danger");
+      } finally {
+        globalLoader.hide();
       }
     }
 
     if (action === "delete") {
       if (!confirm("Delete this teacher profile?")) return;
+      globalLoader.show("Deleting teacher...");
       try {
         await deleteDoc(doc(db, "teachers", id));
         showAlert("Teacher deleted.", "success");
@@ -172,6 +182,8 @@ export function initTeachers() {
       } catch (err) {
         console.error(err);
         showAlert("Delete failed: " + err.message, "danger");
+      } finally {
+        globalLoader.hide();
       }
     }
   });

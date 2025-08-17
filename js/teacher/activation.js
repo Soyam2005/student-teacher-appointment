@@ -8,6 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { showAlert } from "../utils/alerts.js";
 import { findPendingTeacherByEmail, redirectByRole } from "../auth/login.js";
+import { globalLoader } from "../utils/loader.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get("email");
@@ -29,6 +30,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
+    globalLoader.show("Activating account...");
     // Verify teacher exists in pending state
     const pendingTeacher = await findPendingTeacherByEmail(email);
     if (!pendingTeacher || pendingTeacher.data.status !== "pending") {
@@ -64,5 +66,7 @@ form.addEventListener("submit", async (e) => {
   } catch (err) {
     console.error(err);
     showAlert("Activation failed: " + err.message, "danger");
+  } finally {
+    globalLoader.hide();
   }
 });

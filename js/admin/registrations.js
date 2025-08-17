@@ -12,6 +12,7 @@ import {
 
 import { showAlert } from "../utils/alerts.js";
 import { logAction } from "../utils/logger.js";
+import { globalLoader } from "../utils/loader.js";
 
 /**
  * Initialize pending student registration listener & UI
@@ -39,7 +40,7 @@ export function initRegistrations() {
 
       const tr = document.createElement("tr");
 
-      const createdAt = new Date(u.createdAt).toLocaleString()
+      const createdAt = new Date(u.createdAt).toLocaleString();
 
       tr.innerHTML = `
         <td>${escapeHtml(u.fullName || u.name || "-")}</td>
@@ -67,6 +68,7 @@ export function initRegistrations() {
     if (!action || !uid) return;
 
     if (action === "approve") {
+      globalLoader.show("Approving student...");
       try {
         await updateDoc(doc(db, "users", uid), {
           approved: true,
@@ -78,6 +80,8 @@ export function initRegistrations() {
       } catch (err) {
         console.error(err);
         showAlert("Approve failed: " + err.message, "danger");
+      } finally {
+        globalLoader.hide();
       }
     }
 
@@ -89,6 +93,7 @@ export function initRegistrations() {
         )
       )
         return;
+      globalLoader.show("Rejecting student...");
       try {
         await updateDoc(doc(db, "users", uid), {
           approved: false,
@@ -100,6 +105,8 @@ export function initRegistrations() {
       } catch (err) {
         console.error(err);
         showAlert("Reject failed: " + err.message, "danger");
+      } finally {
+        globalLoader.hide();
       }
     }
   });

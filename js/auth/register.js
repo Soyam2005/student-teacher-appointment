@@ -9,6 +9,7 @@ import {
 
 import { logAction } from "../utils/logger.js";
 import { showAlert } from "../utils/alerts.js";
+import { globalLoader } from "../utils/loader.js";
 
 /**
  * Register user as STUDENT only. Admin must approve.
@@ -17,6 +18,7 @@ import { showAlert } from "../utils/alerts.js";
  * @param {string} fullName
  */
 async function registerUser(email, password, fullName) {
+  globalLoader.show("Creating account...");
   try {
     // create firebase auth user
     const userCredential = await createUserWithEmailAndPassword(
@@ -50,6 +52,8 @@ async function registerUser(email, password, fullName) {
   } catch (err) {
     showAlert("Registration failed: " + err.message, "danger");
     logAction("Registration failed: " + err.message, "unknown");
+  } finally {
+    globalLoader.hide();
   }
 }
 

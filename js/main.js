@@ -3,6 +3,7 @@ import { auth } from "./firebase/firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 import { redirectByRole, loginUser } from "./auth/login.js";
+import { showAlert } from "./utils/alerts.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");

@@ -11,6 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { logAction } from "../utils/logger.js";
 import { showAlert } from "../utils/alerts.js";
+import { globalLoader } from "../utils/loader.js";
 
 /**
  * @param {object} auth
@@ -18,6 +19,7 @@ import { showAlert } from "../utils/alerts.js";
  * @param {string} password
  */
 export async function loginUser(auth, email, password) {
+  globalLoader.show("Logging in...");
   try {
     // Try normal login
     const userCredential = await signInWithEmailAndPassword(
@@ -67,6 +69,8 @@ export async function loginUser(auth, email, password) {
     console.error(error);
     showAlert("Login failed: " + error.message, "danger");
     logAction("Login failed", "unknown");
+  } finally {
+    globalLoader.hide();
   }
 }
 
@@ -96,23 +100,31 @@ export async function findPendingTeacherByEmail(email) {
  * @param {string} uid
  */
 export async function redirectByRole(uid) {
-  const key = doc(db, "users", uid);
-  const userDoc = await getDoc(key);
-  const { role } = userDoc.data();
-  switch (role) {
-    case "admin":
-      window.location.href = "admin-dashboard.html";
-      break;
-    case "teacher":
-      window.location.href = "teacher-dashboard.html";
-      break;
-    case "student":
-      window.location.href = "student-dashboard.html";
-      break;
-    default:
-      showAlert("Invalid role", "danger");
-      window.location.href = "index.html";
-      break;
+  globalLoader.show("Redirecting...");
+  try {
+    const key = doc(db, "users", uid);
+    const userDoc = await getDoc(key);
+    const { role } = userDoc.data();
+    switch (role) {
+      case "admin":
+        window.location.href = "admin-dashboard.html";
+        break;
+      case "teacher":
+        window.location.href = "teacher-dashboard.html";
+        break;
+      case "student":
+        window.location.href = "student-dashboard.html";
+        break;
+      default:
+        showAlert("Invalid role", "danger");
+        window.location.href = "index.html";
+        break;
+    }
+    logAction(`Redirected to ${role} dashboard`);
+  } catch (error) {
+    console.error("Error redirecting:", error);
+    showAlert("Error redirecting user", "danger");
+  } finally {
+    globalLoader.hide();
   }
-  logAction(`Redirected to ${role} dashboard`);
 }

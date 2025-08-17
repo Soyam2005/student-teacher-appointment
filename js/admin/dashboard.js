@@ -11,6 +11,7 @@ import {
 import { initTeachers } from "./teachers.js";
 import { initRegistrations } from "./registrations.js";
 import { showAlert } from "../utils/alerts.js";
+import { globalLoader } from "../utils/loader.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Basic auth guard: ensure logged-in user is admin
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      globalLoader.show("Verifying admin access...");
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
       const data = userSnapshot.exists() ? userSnapshot.data() : null;
@@ -39,17 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error(err);
       showAlert("Failed to initialize admin dashboard.", "danger");
+    } finally {
+      globalLoader.hide();
     }
   });
 
   document.getElementById("logoutBtn").addEventListener("click", async () => {
+    globalLoader.show("Logging out...");
     try {
       await signOut(auth);
       showAlert("Logged out.", "success");
-      window.location.href = "index.html"
+      window.location.href = "index.html";
     } catch (err) {
       console.error(err);
       showAlert("Logout failed.", "danger");
+    } finally {
+      globalLoader.hide();
     }
   });
 });
